@@ -24,7 +24,7 @@ describe(pjson.name, () => {
   })
 
   test('valid token', done => {
-    const c = new CognitoIdentityServiceProvider()
+    const c = new CognitoIdentityServiceProvider({region: process.env.identity_pool_id.split(':')[0]})
     c
       .adminInitiateAuth({
         AuthFlow: 'ADMIN_NO_SRP_AUTH',
