@@ -5,7 +5,7 @@ const {CognitoIdentity} = require('aws-sdk')
 const {verify} = require('jsonwebtoken')
 const jwkToPem = require('jwk-to-pem')
 
-const ci = new CognitoIdentity()
+const ci = new CognitoIdentity({region: process.env.identity_pool_id.split(':')[0]})
 
 const jwks = {}
 
@@ -46,7 +46,11 @@ const fetchJWKs = (issuer) => {
 }
 
 exports.handler = (event, context, callback) => {
-  const token = event.authorizationToken
+  const bearerToken = event.authorizationToken
+  if (!/^Bearer [^ ]+$/.test(bearerToken)) {
+    return callback(new Error('Invalid token format. Expected "Bearer ..."!'))
+  }
+  const token = bearerToken.split(' ').pop()
 
   const [header64, payload64] = token.split('.')
   const {kid: tokenKid} = JSON.parse(Buffer.from(header64, 'base64'))

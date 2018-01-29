@@ -8,7 +8,7 @@ const {CognitoIdentityServiceProvider} = require('aws-sdk')
 
 describe(pjson.name, () => {
   test('expired token', done => {
-    const authorizationToken = 'eyJraWQiOiI2WUpiTWV6MGdHUHNpT0pPM1YyaWplKzJsUWUzUTEyd1FEazZ1cjhCUkdnPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxOTA2NzIwOC03ODU1LTQ4Y2YtYjNlNy1hMzYxOWNmMTQyMTkiLCJhdWQiOiJibW9lajVqOHQxODdqbW51bXUwMGpydDJ2IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiYThkMWQ5M2MtMDRmYS0xMWU4LWJjNWYtMjc1YmI5OTYyYmI3IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1MTcyMzM1MjUsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2ZkaUJhN0pTTyIsImNvZ25pdG86dXNlcm5hbWUiOiJtYXRhLm5vcmRpYysyQGdtYWlsLmNvbSIsImV4cCI6MTUxNzIzNzEyNSwiaWF0IjoxNTE3MjMzNTI1LCJlbWFpbCI6Im1hdGEubm9yZGljKzJAZ21haWwuY29tIn0.jy83r_b7fXmKGhX3_1g4xXE0WwKCQouyMKMfDetyVQd7TuEocs0pnlGxSXeoPCDojPwOWkU7e3_DX8D9yM3ntvR5raigC6YJB6gjZUCgTLt9-xcnFlhk1KEMfQxMGUQIr4gsBOAE2KzNifWkLvdPr91kY17MMWmWU20NaoSgFkT-4zjDn_W-R5UgRTv76-5sayXCIdj_mcBcmkiKAx9T1bNPjPRYtBVkqNhUjXCvlnJVYKf2_TEsM9fdXoIUjrTLvs0NBnfJzIwvFfytuZKB4rSIeW6l_Tj4JHGjf0GC_HOn4B0HZ4iDaAB1VlSktbLW3aBxBmuANonWa1RRdD1QKQ'
+    const authorizationToken = 'Bearer eyJraWQiOiI2WUpiTWV6MGdHUHNpT0pPM1YyaWplKzJsUWUzUTEyd1FEazZ1cjhCUkdnPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxOTA2NzIwOC03ODU1LTQ4Y2YtYjNlNy1hMzYxOWNmMTQyMTkiLCJhdWQiOiJibW9lajVqOHQxODdqbW51bXUwMGpydDJ2IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV2ZW50X2lkIjoiYThkMWQ5M2MtMDRmYS0xMWU4LWJjNWYtMjc1YmI5OTYyYmI3IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1MTcyMzM1MjUsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2ZkaUJhN0pTTyIsImNvZ25pdG86dXNlcm5hbWUiOiJtYXRhLm5vcmRpYysyQGdtYWlsLmNvbSIsImV4cCI6MTUxNzIzNzEyNSwiaWF0IjoxNTE3MjMzNTI1LCJlbWFpbCI6Im1hdGEubm9yZGljKzJAZ21haWwuY29tIn0.jy83r_b7fXmKGhX3_1g4xXE0WwKCQouyMKMfDetyVQd7TuEocs0pnlGxSXeoPCDojPwOWkU7e3_DX8D9yM3ntvR5raigC6YJB6gjZUCgTLt9-xcnFlhk1KEMfQxMGUQIr4gsBOAE2KzNifWkLvdPr91kY17MMWmWU20NaoSgFkT-4zjDn_W-R5UgRTv76-5sayXCIdj_mcBcmkiKAx9T1bNPjPRYtBVkqNhUjXCvlnJVYKf2_TEsM9fdXoIUjrTLvs0NBnfJzIwvFfytuZKB4rSIeW6l_Tj4JHGjf0GC_HOn4B0HZ4iDaAB1VlSktbLW3aBxBmuANonWa1RRdD1QKQ'
 
     authorizer(
       {
@@ -39,7 +39,7 @@ describe(pjson.name, () => {
       .then(({AuthenticationResult: {IdToken}}) => {
         authorizer(
           {
-            authorizationToken: IdToken,
+            authorizationToken: `Bearer ${IdToken}`,
             methodArn: 'foo'
           },
           {},
