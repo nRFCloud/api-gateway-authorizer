@@ -26,10 +26,13 @@ const fetchJWKs = (issuer) => {
           })
           res.on('end', () => {
             const keys = JSON.parse(rawData).keys
-            resolve(keys.map(key => ({
-              ...key,
-              pem: jwkToPem({kty: key.kty, n: key.n, e: key.e})
-            })))
+            resolve(keys.map(key => Object.assign(
+              {},
+              key,
+              {
+                pem: jwkToPem({kty: key.kty, n: key.n, e: key.e})
+              }
+            )))
           })
         } catch (err) {
           return reject(err)
