@@ -21,3 +21,5 @@ Set these environment variables:
     username=user@example.com
     password=changeme
     client_id=bmoej5j8t187jmnumu00jrt2v
+    AWS_ACCESS_KEY_ID=changeme
+    AWS_SECRET_ACCESS_KEY=changeme
