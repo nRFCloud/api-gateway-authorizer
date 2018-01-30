@@ -61,7 +61,7 @@ describe(pjson.name, () => {
         authorizer(
           {
             authorizationToken: `Bearer ${IdToken}`,
-            methodArn: 'foo'
+            methodArn: 'arn:aws:execute-api:us-east-1:680502709288:1ewo2b2jmj/null/GET/'
           },
           {},
           (err, res) => {
@@ -78,7 +78,7 @@ describe(pjson.name, () => {
                 {
                   'Action': 'execute-api:Invoke',
                   'Effect': 'Allow',
-                  'Resource': 'foo'
+                  'Resource': 'arn:aws:execute-api:us-east-1:680502709288:1ewo2b2jmj/*'
                 }
               ]
             })

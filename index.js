@@ -107,7 +107,7 @@ exports.handler = (event, context, callback) => {
             {
               Action: 'execute-api:Invoke',
               Effect: 'Allow',
-              Resource: event.methodArn
+              Resource: `${event.methodArn.split('/')[0]}/*`
             }
           ]
         },
