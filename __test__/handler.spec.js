@@ -44,7 +44,8 @@ describe(pjson.name, () => {
   })
 
   test('valid token', done => {
-    const c = new CognitoIdentityServiceProvider({region: process.env.identity_pool_id.split(':')[0]})
+    const region = process.env.identity_pool_id.split(':')[0]
+    const c = new CognitoIdentityServiceProvider({region})
     c
       .adminInitiateAuth({
         AuthFlow: 'ADMIN_NO_SRP_AUTH',
@@ -68,6 +69,9 @@ describe(pjson.name, () => {
             expect(res).toHaveProperty('principalId')
             expect(res.context).toHaveProperty('cognitoIdentityId')
             expect(res.principalId).toEqual(res.context.cognitoIdentityId)
+            expect(res.principalId).toEqual(
+              expect.stringMatching(new RegExp(`^${region}:[a-f0-9-]+$`))
+            )
             expect(res.policyDocument).toEqual({
               'Version': '2012-10-17',
               'Statement': [

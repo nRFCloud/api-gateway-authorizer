@@ -58,6 +58,7 @@ const getCognitoIdentityForToken = (token, payload) => {
         }
       })
       .promise()
+      .then(({IdentityId}) => IdentityId)
   }
   return cognitoIdentities[sub]
 }
