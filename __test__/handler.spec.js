@@ -46,8 +46,8 @@ describe(pjson.name, () => {
           (err, res) => {
             expect(err).toBeNull()
             expect(res).toHaveProperty('principalId')
-            expect(res.context).toHaveProperty('user')
-            expect(res.principalId).toEqual(res.context.user)
+            expect(res.context).toHaveProperty('cognitoIdentityId')
+            expect(res.principalId).toEqual(res.context.cognitoIdentityId)
             expect(res.policyDocument).toEqual({
               'Version': '2012-10-17',
               'Statement': [

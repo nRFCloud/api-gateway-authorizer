@@ -97,11 +97,13 @@ exports.handler = (event, context, callback) => {
             }
           ]
         },
-        context: {
-          user: IdentityId,
-          email: payload.email,
-          'cognito:username': payload['cognito:username']
-        }
+        context: Object.assign(
+          {},
+          payload,
+          {
+            cognitoIdentityId: IdentityId
+          }
+        )
       })))
     .catch(callback)
 }

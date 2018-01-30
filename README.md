@@ -12,6 +12,17 @@
 
 Authorizes requests to the nRF Cloud API with Cognito Tokens.
 
+It fetches the Cognito Identity ID for the user pool token.
+The user information will be on `event.requestContext.authorizer`:
+
+```json
+{
+    cognitoIdentityId: 'us-east-1:...', 
+    'cognito:username': 'alex.doe@example.com',
+    email: 'alex.doe@example.com'
+}
+```
+
 ## Tests
 
 Set these environment variables:
