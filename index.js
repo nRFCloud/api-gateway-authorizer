@@ -105,5 +105,12 @@ exports.handler = (event, context, callback) => {
           }
         )
       })))
-    .catch(callback)
+    .catch(err => {
+      // See https://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html#api-gateway-custom-authorizer-output
+      if (err && (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError')) {
+        return callback('Unauthorized') // eslint-disable-line standard/no-callback-literal
+      }
+      console.error(err)
+      return callback(`Error: ${JSON.stringify(err)}`) // eslint-disable-line standard/no-callback-literal
+    })
 }

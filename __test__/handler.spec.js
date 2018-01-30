@@ -17,8 +17,7 @@ describe(pjson.name, () => {
       },
       {},
       (err, res) => {
-        expect(err).toBeInstanceOf(Error)
-        expect(err.name).toEqual('TokenExpiredError')
+        expect(err).toEqual('Unauthorized')
         done()
       })
   })
