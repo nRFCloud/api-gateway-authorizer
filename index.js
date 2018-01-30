@@ -64,8 +64,9 @@ const getCognitoIdentityForToken = (token, payload) => {
 
 exports.handler = (event, context, callback) => {
   const bearerToken = event.authorizationToken
-  if (!/^Bearer [^ ]+$/.test(bearerToken)) {
-    return callback(new Error('Invalid token format. Expected "Bearer ..."!'))
+  if (!/^Bearer [^ .]+.[^ .]+.[^ ]+$/.test(bearerToken)) {
+    // Invalid token format. Expected "Bearer ..."!
+    return callback('Unauthorized') // eslint-disable-line standard/no-callback-literal
   }
   const token = bearerToken.split(' ').pop()
 
@@ -74,11 +75,13 @@ exports.handler = (event, context, callback) => {
   const {iss, token_use: use} = JSON.parse(Buffer.from(payload64, 'base64'))
 
   if (iss !== process.env.user_pool_url) {
-    return callback(new Error(`Invalid issuer: ${iss}!`))
+    // Invalid issuer
+    return callback('Unauthorized') // eslint-disable-line standard/no-callback-literal
   }
 
   if (use !== 'id') {
-    return callback(new Error(`Must provide an "id" token.`))
+    // Must provide an "id" token
+    return callback('Unauthorized') // eslint-disable-line standard/no-callback-literal
   }
 
   fetchJWKs(iss)

@@ -22,6 +22,27 @@ describe(pjson.name, () => {
       })
   })
 
+  describe('invalid tokens', () => {
+    [
+      ['invalid Bearer token', 'Bearer foo'],
+      ['invalid token', 'foo'],
+      ['empty token', undefined]
+    ].forEach(([title, authorizationToken]) => {
+      test(title, done => {
+        authorizer(
+          {
+            authorizationToken,
+            methodArn: 'foo'
+          },
+          {},
+          (err) => {
+            expect(err).toEqual('Unauthorized')
+            done()
+          })
+      })
+    })
+  })
+
   test('valid token', done => {
     const c = new CognitoIdentityServiceProvider({region: process.env.identity_pool_id.split(':')[0]})
     c
