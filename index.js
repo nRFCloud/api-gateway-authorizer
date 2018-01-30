@@ -45,6 +45,23 @@ const fetchJWKs = (issuer) => {
   return jwks[jwkLocation]
 }
 
+const cognitoIdentities = {}
+
+const getCognitoIdentityForToken = (token, payload) => {
+  const {iss, sub} = payload
+  if (!cognitoIdentities[sub]) {
+    cognitoIdentities[sub] = ci
+      .getId({
+        IdentityPoolId: process.env.identity_pool_id,
+        Logins: {
+          [iss.replace(/^https:\/\//, '')]: token
+        }
+      })
+      .promise()
+  }
+  return cognitoIdentities[sub]
+}
+
 exports.handler = (event, context, callback) => {
   const bearerToken = event.authorizationToken
   if (!/^Bearer [^ ]+$/.test(bearerToken)) {
@@ -77,15 +94,8 @@ exports.handler = (event, context, callback) => {
         })
       })
     })
-    .then(payload => ci
-      .getId({
-        IdentityPoolId: process.env.identity_pool_id,
-        Logins: {
-          [payload.iss.replace(/^https:\/\//, '')]: token
-        }
-      })
-      .promise()
-      .then(({IdentityId}) => callback(null, {
+    .then(payload => getCognitoIdentityForToken(token, payload)
+      .then(IdentityId => callback(null, {
         principalId: IdentityId,
         policyDocument: {
           Version: '2012-10-17',
